@@ -1,7 +1,7 @@
 #ifndef LOW_PASS_FILTER_HPP
 #define LOW_PASS_FILTER_HPP
 
-#include "filter/Filter.hpp"
+#include "utilities/filter/Filter.hpp"
 
 namespace FilterSpace
 {

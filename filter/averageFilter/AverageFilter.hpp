@@ -1,7 +1,7 @@
 #ifndef AVERAGE_FILTER_HPP
 #define AVERAGE_FILTER_HPP
 
-#include "filter/Filter.hpp"
+#include "utilities/filter/Filter.hpp"
 #include <stdint.h>
 
 namespace FilterSpace
