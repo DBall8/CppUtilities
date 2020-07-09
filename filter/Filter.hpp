@@ -1,7 +1,7 @@
 #ifndef FILTER_HPP
 #define FILTER_HPP
 
-namespace FilterSpace
+namespace filter
 {
   class Filter
   {

@@ -3,7 +3,7 @@
 
 #include "utilities/filter/Filter.hpp"
 
-namespace FilterSpace
+namespace filter
 {
   class LowPassFilter: public Filter
   {

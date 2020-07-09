@@ -4,7 +4,7 @@
 #include "utilities/filter/Filter.hpp"
 #include <stdint.h>
 
-namespace FilterSpace
+namespace filter
 {
   class AverageFilter: public Filter
   {
