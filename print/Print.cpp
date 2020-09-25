@@ -3,14 +3,15 @@
 #include "drivers/assert/Assert.hpp"
 
 using namespace uart;
+using namespace Strings;
 
-const static char* NEWLINE = "\r\n\0";
+const static char* NEWLINE = "\r\n";
 const static uint8_t NEWLINE_LENGTH = strlen(NEWLINE) + 1;
 
 IUart* PrintHandler::pUart_ = nullptr;
 char PrintHandler::outputStr[MAX_STRING_LENGTH];
 
-PrintHandler::PrintHandler(uart::IUart* pUart)
+void PrintHandler::initialize(uart::IUart* pUart)
 {
     PrintHandler::pUart_ = pUart;
 }
@@ -20,10 +21,28 @@ void PrintHandler::parseArguement(char* ouputStr, va_list* pList, char* selector
     uint16_t outputLength = strlen(outputStr);
     switch (selectorStr[0])
     {
+        case 'x':
+        case 'X':
+        {
+            int decVal = va_arg(*pList, int);
+            uint16_t remainingSpace = MAX_STRING_LENGTH - outputLength;
+            uint2str(decVal, &(outputStr[outputLength]), remainingSpace, 16);
+            break;
+        }
+
         case 'd':
         {
             int decVal = va_arg(*pList, int);
-            int2str(decVal, &(outputStr[outputLength]));
+            uint16_t remainingSpace = MAX_STRING_LENGTH - outputLength;
+            int2str(decVal, &(outputStr[outputLength]), remainingSpace);
+            break;
+        }
+
+        case 'u':
+        {
+            unsigned int decVal = va_arg(*pList, unsigned int);
+            uint16_t remainingSpace = MAX_STRING_LENGTH - outputLength;
+            uint2str(decVal, &(outputStr[outputLength]), remainingSpace);
             break;
         }
 
@@ -31,6 +50,22 @@ void PrintHandler::parseArguement(char* ouputStr, va_list* pList, char* selector
         {
             int binVal = va_arg(*pList, int);
             bin2str(binVal, &(outputStr[outputLength]), 8);
+            break;
+        }
+
+        case 's':
+        {
+            // Get the string from the arguement list
+            const char* strVal = va_arg(*pList, char*);
+            uint16_t strLength = strlen(strVal);
+
+            // Cut string off early if there is not enough space to fit the full string
+            uint16_t spaceRemaining = MAX_STRING_LENGTH - outputLength;
+            if (strLength > spaceRemaining) strLength = spaceRemaining;
+
+            // Copy to output
+            copy(&(outputStr[outputLength]), strVal, strLength);
+            outputStr[outputLength + strLength] = '\0';
             break;
         }
         

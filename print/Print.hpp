@@ -10,9 +10,7 @@
 class PrintHandler
 {
     public:
-        PrintHandler(uart::IUart* pUart);
-        ~PrintHandler(){}
-
+        static void initialize(uart::IUart* pUart);
         static void print(const char* format, bool newline, ...);
 
     private:
