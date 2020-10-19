@@ -6,6 +6,7 @@
 
 #define PRINTLN(x, ...) PrintHandler::print(x, true, ##__VA_ARGS__)
 #define PRINT(x, ...) PrintHandler::print(x, false, ##__VA_ARGS__)
+#define PRINT_FLUSH() PrintHandler::flushUart()
 
 #ifdef DEBUG
 #define DEBUG_PRINTLN(x, ...) PrintHandler::print(x, true, ##__VA_ARGS__)
@@ -20,6 +21,7 @@ class PrintHandler
     public:
         static void initialize(Uart::IUart* pUart);
         static void print(const char* format, bool newline, ...);
+        static void flushUart(){ pUart_->flush(); }
 
     private:
         static Uart::IUart* pUart_;
