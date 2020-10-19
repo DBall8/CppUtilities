@@ -2,7 +2,7 @@
 #include "utilities/strings/Strings.hpp"
 #include "drivers/assert/Assert.hpp"
 
-using namespace uart;
+using namespace Uart;
 using namespace Strings;
 
 const static char* NEWLINE = "\r\n";
@@ -11,14 +11,14 @@ const static uint8_t NEWLINE_LENGTH = strlen(NEWLINE) + 1;
 IUart* PrintHandler::pUart_ = nullptr;
 char PrintHandler::outputStr[MAX_STRING_LENGTH + 1];
 
-void PrintHandler::initialize(uart::IUart* pUart)
+void PrintHandler::initialize(Uart::IUart* pUart)
 {
     PrintHandler::pUart_ = pUart;
     // Safety terminator to prevent overflows
     outputStr[MAX_STRING_LENGTH] = '\0';
 }
 
-void PrintHandler::parseArguement(char* ouputStr, va_list* pList, char* selectorStr)
+void PrintHandler::parseArguement(char* ouputStr, va_list* pList, const char* selectorStr)
 {
     uint16_t outputLength = strlen(outputStr);
     switch (selectorStr[0])

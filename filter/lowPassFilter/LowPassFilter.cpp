@@ -1,6 +1,6 @@
 #include "LowPassFilter.hpp"
 
-namespace filter
+namespace Filter
 {
 
   LowPassFilter::LowPassFilter(int filterSize, float initialValue)

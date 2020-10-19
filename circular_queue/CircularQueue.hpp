@@ -12,7 +12,7 @@ class CircularQueue
         CircularQueue(T* array,
                       uint16_t size,
                       bool protectAccess = false,
-                      interrupt::IInterrupt* pInterruptControl = nullptr);
+                      Interrupt::IInterrupt* pInterruptControl = nullptr);
         ~CircularQueue();
 
         void push(T data);
@@ -26,14 +26,14 @@ class CircularQueue
         uint16_t size_;
         uint16_t numData_;
         bool protectAccess_;
-        interrupt::IInterrupt* pInterruptControl_;
+        Interrupt::IInterrupt* pInterruptControl_;
 };
 
 template <class T>
 CircularQueue<T>::CircularQueue(T* array,
                                 uint16_t size,
                                 bool protectAccess,
-                                interrupt::IInterrupt* pInterruptControl):
+                                Interrupt::IInterrupt* pInterruptControl):
     data_(array),
     size_(size),
     protectAccess_(protectAccess),

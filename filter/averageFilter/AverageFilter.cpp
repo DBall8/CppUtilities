@@ -1,6 +1,6 @@
 #include "AverageFilter.hpp"
 
-namespace filter
+namespace Filter
 {
 
   AverageFilter::AverageFilter(int filterSize)

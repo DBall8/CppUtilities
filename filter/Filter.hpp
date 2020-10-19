@@ -1,13 +1,13 @@
 #ifndef FILTER_HPP
 #define FILTER_HPP
 
-namespace filter
+namespace Filter
 {
-  class Filter
+  class IFilter
   {
     public:
-      Filter(){};
-      ~Filter(){};
+      IFilter(){};
+      ~IFilter(){};
 
       virtual void addSample(int sample) = 0;
       virtual int getValueInt() = 0;

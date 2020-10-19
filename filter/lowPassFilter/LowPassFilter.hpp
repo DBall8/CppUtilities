@@ -3,9 +3,9 @@
 
 #include "utilities/filter/Filter.hpp"
 
-namespace filter
+namespace Filter
 {
-  class LowPassFilter: public Filter
+  class LowPassFilter: public IFilter
   {
     private:
       int filterSize_;

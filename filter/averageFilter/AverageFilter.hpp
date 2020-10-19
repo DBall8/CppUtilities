@@ -4,9 +4,9 @@
 #include "utilities/filter/Filter.hpp"
 #include <stdint.h>
 
-namespace filter
+namespace Filter
 {
-  class AverageFilter: public Filter
+  class AverageFilter: public IFilter
   {
     private:
       uint32_t* samples;

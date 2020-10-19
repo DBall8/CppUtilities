@@ -18,16 +18,16 @@
 class PrintHandler
 {
     public:
-        static void initialize(uart::IUart* pUart);
+        static void initialize(Uart::IUart* pUart);
         static void print(const char* format, bool newline, ...);
 
     private:
-        static uart::IUart* pUart_;
+        static Uart::IUart* pUart_;
 
         const static uint16_t MAX_STRING_LENGTH = 255;
         static char outputStr[];
 
-        static void parseArguement(char* ouputStr, va_list* pList, char* selectorStr);
+        static void parseArguement(char* ouputStr, va_list* pList, const char* selectorStr);
 };
 
 #endif
