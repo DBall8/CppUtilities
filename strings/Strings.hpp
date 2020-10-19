@@ -11,6 +11,7 @@ namespace Strings
     char* int2str(int integer, char* dest, uint16_t maxLength, uint8_t base = 10);
     char* uint2str(unsigned int integer, char* dest, uint16_t maxLength, uint8_t base = 10);
     char* bin2str(unsigned int integer, char* dest, uint8_t numPlaces);
+    char* float2str(float value, char* dest, uint16_t maxLength, uint8_t numDecimalPlaces = 2);
     void reverse(char* str);
     bool isValidInteger(char charVal);
     uint8_t charToInt(char charVal);

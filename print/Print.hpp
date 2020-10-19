@@ -7,6 +7,14 @@
 #define PRINTLN(x, ...) PrintHandler::print(x, true, ##__VA_ARGS__)
 #define PRINT(x, ...) PrintHandler::print(x, false, ##__VA_ARGS__)
 
+#ifdef DEBUG
+#define DEBUG_PRINTLN(x, ...) PrintHandler::print(x, true, ##__VA_ARGS__)
+#define DEBUG_PRINT(x, ...) PrintHandler::print(x, false, ##__VA_ARGS__)
+#else
+#define DEBUG_PRINTLN(x, ...)
+#define DEBUG_PRINT(x, ...)
+#endif
+
 class PrintHandler
 {
     public:

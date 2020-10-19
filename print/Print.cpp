@@ -9,11 +9,13 @@ const static char* NEWLINE = "\r\n";
 const static uint8_t NEWLINE_LENGTH = strlen(NEWLINE) + 1;
 
 IUart* PrintHandler::pUart_ = nullptr;
-char PrintHandler::outputStr[MAX_STRING_LENGTH];
+char PrintHandler::outputStr[MAX_STRING_LENGTH + 1];
 
 void PrintHandler::initialize(uart::IUart* pUart)
 {
     PrintHandler::pUart_ = pUart;
+    // Safety terminator to prevent overflows
+    outputStr[MAX_STRING_LENGTH] = '\0';
 }
 
 void PrintHandler::parseArguement(char* ouputStr, va_list* pList, char* selectorStr)
@@ -50,6 +52,14 @@ void PrintHandler::parseArguement(char* ouputStr, va_list* pList, char* selector
         {
             int binVal = va_arg(*pList, int);
             bin2str(binVal, &(outputStr[outputLength]), 8);
+            break;
+        }
+
+        case 'f':
+        {
+            double floatVal = va_arg(*pList, double);
+            uint16_t remainingSpace = MAX_STRING_LENGTH - outputLength;
+            float2str(floatVal, &(outputStr[outputLength]), remainingSpace);
             break;
         }
 

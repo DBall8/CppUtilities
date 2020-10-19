@@ -1,4 +1,5 @@
 #include "Strings.hpp"
+#include "utilities/Conversions.hpp"
 
 namespace Strings
 {
@@ -128,6 +129,41 @@ namespace Strings
         // } while (integer != 0);
         
         dest[numPlaces] = '\0';
+
+        return dest;
+    }
+
+    char* float2str(float value, char* dest, uint16_t maxLength, uint8_t numDecimalPlaces)
+    {
+        // Place the string for the whole number portion into the string buffer
+        int32_t wholeValue = (int32_t)value;
+        int2str(wholeValue, dest, maxLength);
+
+        // Move the current operating string to the end of the whole value string
+        uint16_t strLength = strlen(dest);
+        char* decimalStr = &(dest[strLength]);
+
+        if (strLength >= maxLength) return dest;
+
+        // Make positive, since we would have already written a negative sign in int2str
+        if (value < 0) value *= -1.0f;
+
+        // Write the decimal place
+        decimalStr[0] = '.';
+
+        uint16_t i = 1;
+        while ((i <= numDecimalPlaces) &&
+               (strLength < maxLength-1))   // Leave space for null terminator
+        {
+            uint32_t multiplier = exp(10, i);
+            uint32_t digit = (uint32_t)(value * multiplier) % 10;
+            decimalStr[i] = (char)(digit + ZERO_VAL);
+
+            i++;
+            strLength++;
+        }
+
+        decimalStr[numDecimalPlaces+1] = '\0';
 
         return dest;
     }
