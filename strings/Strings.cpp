@@ -204,4 +204,78 @@ namespace Strings
             numBytes--;
         }
     }
+
+    static char* lastPosition;
+    char* strtok(char* str, char delimeter)
+    {
+        // Use last successful call to strtok's string if input was nullptr
+        if (str == nullptr)
+        {
+            if (lastPosition == nullptr) return nullptr; // No string saved
+            str = lastPosition + 1;
+        }
+
+        char* strStart = str;
+
+        while (*str != '\0')
+        {
+            if (*str == delimeter)
+            {
+                *str = '\0';
+                lastPosition = str;
+                return strStart;
+            }
+
+            str++;
+        }
+
+        lastPosition = nullptr;
+        return strStart;
+    }
+
+    bool strcompare(const char* str1, const char* str2)
+    {
+        while ((*str1 != '\0') && (*str2 != '\0'))
+        {
+            if (*str1 != *str2)
+            {
+                return false;
+            }
+
+            str1++;
+            str2++;
+        }
+
+        if ((*str1 == '\0') && (*str2 == '\0'))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    int32_t str2int(const char* str)
+    {
+        int32_t value = 0;
+        bool isNegative = (str[0] == '-');
+
+        if (isNegative) str++;
+
+        while (isDigit(*str))
+        {
+            value *= 10;
+            value += *str - ZERO_VAL;
+            str++;
+        }
+
+        if (isNegative) value *= -1;
+
+        return value;
+    }
+
+    bool isDigit(char c)
+    {
+        uint32_t digitVal = c - ZERO_VAL;
+        return (digitVal >= 0) && (digitVal <= 9);
+    }
 }
