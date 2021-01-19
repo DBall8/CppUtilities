@@ -16,6 +16,10 @@ namespace Strings
     bool isValidInteger(char charVal);
     uint8_t charToInt(char charVal);
     void copy(char* dest, const char* src, uint16_t numBytes);
+    char* strtok(char* str, char delimeter);
+    bool strcompare(const char* str1, const char* str2);
+    int32_t str2int(const char* str);
+    bool isDigit(char c);
 }
 
 #endif
