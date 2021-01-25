@@ -1,7 +1,7 @@
 #ifndef COMMAND_INTERFACE_HPP
 #define COMMAND_INTERFACE_HPP
 
-#include "drivers/uart/IUart.hpp"
+#include "drivers/serial/ISerial.hpp"
 
 namespace Cli
 {
@@ -21,7 +21,7 @@ namespace Cli
     class CommandInterface
     {
         public:
-            CommandInterface(Uart::IUart* pUart,
+            CommandInterface(Serial::ISerial* pUart,
                              Command* commands,
                              uint16_t numCommands);
 
@@ -34,7 +34,7 @@ namespace Cli
         private:
             static char inputBuffer_[MAX_LINE_LENGTH];
 
-            Uart::IUart* pUart_;
+            Serial::ISerial* pSerial_;
             Command* commands_;
             uint16_t numCommands_;
 

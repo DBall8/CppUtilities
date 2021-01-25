@@ -2,18 +2,18 @@
 #include "utilities/strings/Strings.hpp"
 #include "drivers/assert/Assert.hpp"
 
-using namespace Uart;
+using namespace Serial;
 using namespace Strings;
 
 const static char* NEWLINE = "\r\n";
 const static uint8_t NEWLINE_LENGTH = strlen(NEWLINE) + 1;
 
-IUart* PrintHandler::pUart_ = nullptr;
+ISerial* PrintHandler::pSerial_ = nullptr;
 char PrintHandler::outputStr[MAX_STRING_LENGTH + 1];
 
-void PrintHandler::initialize(Uart::IUart* pUart)
+void PrintHandler::initialize(Serial::ISerial* pSerial)
 {
-    PrintHandler::pUart_ = pUart;
+    PrintHandler::pSerial_ = pSerial;
     // Safety terminator to prevent overflows
     outputStr[MAX_STRING_LENGTH] = '\0';
 }
@@ -27,7 +27,7 @@ void PrintHandler::parseArguement(char* ouputStr, va_list* pList, const char* se
         case 'X':
         {
             int decVal = va_arg(*pList, int);
-            uint16_t remainingSpace = MAX_STRING_LENGTH - outputLength;
+            int16_t remainingSpace = MAX_STRING_LENGTH - outputLength;
             uint2str(decVal, &(outputStr[outputLength]), remainingSpace, 16);
             break;
         }
@@ -35,7 +35,7 @@ void PrintHandler::parseArguement(char* ouputStr, va_list* pList, const char* se
         case 'd':
         {
             int decVal = va_arg(*pList, int);
-            uint16_t remainingSpace = MAX_STRING_LENGTH - outputLength;
+            int16_t remainingSpace = MAX_STRING_LENGTH - outputLength;
             int2str(decVal, &(outputStr[outputLength]), remainingSpace);
             break;
         }
@@ -43,7 +43,7 @@ void PrintHandler::parseArguement(char* ouputStr, va_list* pList, const char* se
         case 'u':
         {
             unsigned int decVal = va_arg(*pList, unsigned int);
-            uint16_t remainingSpace = MAX_STRING_LENGTH - outputLength;
+            int16_t remainingSpace = MAX_STRING_LENGTH - outputLength;
             uint2str(decVal, &(outputStr[outputLength]), remainingSpace);
             break;
         }
@@ -58,7 +58,7 @@ void PrintHandler::parseArguement(char* ouputStr, va_list* pList, const char* se
         case 'f':
         {
             double floatVal = va_arg(*pList, double);
-            uint16_t remainingSpace = MAX_STRING_LENGTH - outputLength;
+            int16_t remainingSpace = MAX_STRING_LENGTH - outputLength;
             float2str(floatVal, &(outputStr[outputLength]), remainingSpace);
             break;
         }
@@ -70,12 +70,24 @@ void PrintHandler::parseArguement(char* ouputStr, va_list* pList, const char* se
             uint16_t strLength = strlen(strVal);
 
             // Cut string off early if there is not enough space to fit the full string
-            uint16_t spaceRemaining = MAX_STRING_LENGTH - outputLength;
+            int16_t spaceRemaining = MAX_STRING_LENGTH - outputLength;
             if (strLength > spaceRemaining) strLength = spaceRemaining;
 
             // Copy to output
             copy(&(outputStr[outputLength]), strVal, strLength);
             outputStr[outputLength + strLength] = '\0';
+            break;
+        }
+
+        case 'c':
+        {
+            int charVal = va_arg(*pList, int);
+            int16_t remainingSpace = MAX_STRING_LENGTH - outputLength;
+            if (remainingSpace > 0)
+            {
+                outputStr[outputLength] = (char)charVal;
+                outputStr[outputLength+1] = '\0';
+            }
             break;
         }
         
@@ -135,7 +147,7 @@ void PrintHandler::print(const char* format, bool newline, ...)
     uint32_t finalLength = strlen(outputStr);
     assert(finalLength < MAX_STRING_LENGTH, "Print string too long.");
 
-    PrintHandler::pUart_->write((uint8_t*)outputStr, finalLength);
+    PrintHandler::pSerial_->write((uint8_t*)outputStr, finalLength);
 
     va_end(list);
 }

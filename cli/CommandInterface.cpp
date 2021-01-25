@@ -3,7 +3,7 @@
 #include "utilities/strings/Strings.hpp"
 #include "utilities/print/Print.hpp"
 
-using namespace Uart;
+using namespace Serial;
 using namespace Strings;
 
 const char NEWLINE = '\n';
@@ -13,10 +13,10 @@ namespace Cli
 {
     char CommandInterface::inputBuffer_[MAX_LINE_LENGTH];
 
-    CommandInterface::CommandInterface(IUart* pUart,
+    CommandInterface::CommandInterface(ISerial* pSerial,
                                        Command* commands,
                                        uint16_t numCommands):
-        pUart_(pUart),
+        pSerial_(pSerial),
         commands_(commands),
         numCommands_(numCommands),
         bufferIndex_(0),
@@ -39,12 +39,12 @@ namespace Cli
     {
         if (!enabled_) return;
 
-        if (pUart_->isDataAvailable())
+        if (pSerial_->isDataAvailable())
         {
             uint16_t remainingSpace = MAX_LINE_LENGTH - bufferIndex_;
             uint8_t* nextBuffPos = (uint8_t*)&(inputBuffer_[bufferIndex_]);
 
-            uint16_t bytesReceived = pUart_->read(nextBuffPos, remainingSpace);
+            uint16_t bytesReceived = pSerial_->read(nextBuffPos, remainingSpace);
             bufferIndex_ += bytesReceived;
 
             parseInputs();

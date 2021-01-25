@@ -1,7 +1,7 @@
 #ifndef PRINT_HPP
 #define PRINT_HPP
 
-#include "drivers/uart/IUart.hpp"
+#include "drivers/serial/ISerial.hpp"
 #include <stdarg.h>
 
 #define PRINTLN(x, ...) PrintHandler::print(x, true, ##__VA_ARGS__)
@@ -19,12 +19,12 @@
 class PrintHandler
 {
     public:
-        static void initialize(Uart::IUart* pUart);
+        static void initialize(Serial::ISerial* pSerial);
         static void print(const char* format, bool newline, ...);
-        static void flushUart(){ pUart_->flush(); }
+        static void flushUart(){ pSerial_->flush(); }
 
     private:
-        static Uart::IUart* pUart_;
+        static Serial::ISerial* pSerial_;
 
         const static uint16_t MAX_STRING_LENGTH = 255;
         static char outputStr[];
