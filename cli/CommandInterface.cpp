@@ -15,12 +15,14 @@ namespace Cli
 
     CommandInterface::CommandInterface(ISerial* pSerial,
                                        Command* commands,
-                                       uint16_t numCommands):
+                                       uint16_t numCommands,
+                                       bool quite):
         pSerial_(pSerial),
         commands_(commands),
         numCommands_(numCommands),
         bufferIndex_(0),
-        enabled_(false)
+        enabled_(false),
+        quite_(quite)
     {
 
     }
@@ -82,9 +84,12 @@ namespace Cli
                     {
                         token[tokenLength - 1] = '\0';
                     }
-                    
-                    strncpy(argv[argc], token, MAX_PARAM_LENGTH);
-                    argc++;
+
+                    if (strlen(token) > 0)
+                    {
+                        strncpy(argv[argc], token, MAX_PARAM_LENGTH);
+                        argc++;
+                    }
                 } while((token = strtok(nullptr, ' ')) != nullptr);
             }
 
@@ -123,6 +128,6 @@ namespace Cli
             }
         }
 
-        PRINTLN("Command not supported.");
+        if (!quite_) PRINTLN("Command not supported.");
     }
 }

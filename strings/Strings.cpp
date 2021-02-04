@@ -273,6 +273,50 @@ namespace Strings
         return value;
     }
 
+    float str2float(const char* str)
+    {
+        float value = 0;
+        bool isNegative = (str[0] == '-');
+
+        if (isNegative) str++;
+
+        while (isDigit(*str))
+        {
+            value *= 10;
+            value += *str - ZERO_VAL;
+            str++;
+        }
+
+        if (*str != '.')
+        {
+            // Non-digit and non decimal value encountered, end parsing
+            if (isNegative) value *= -1;
+            return value;
+        }
+
+        // Skip the decimal point
+        str++;
+
+        // Determine the length of the remaining value string
+        uint16_t decimalLength = strlen(str);
+        float decimalValue = 0;
+
+        // Parse the decimal portion separately
+        for (int16_t i=(decimalLength-1); i>=0; i--)
+        {
+            decimalValue += (float)(str[i] - ZERO_VAL);
+            decimalValue /= 10;
+           
+        }
+        
+        // Add the decimal value to the whole value
+        value += decimalValue;
+
+        if (isNegative) value *= -1;
+
+        return value;
+    }
+
     bool isDigit(char c)
     {
         uint32_t digitVal = c - ZERO_VAL;

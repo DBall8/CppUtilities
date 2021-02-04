@@ -23,7 +23,8 @@ namespace Cli
         public:
             CommandInterface(Serial::ISerial* pUart,
                              Command* commands,
-                             uint16_t numCommands);
+                             uint16_t numCommands,
+                             bool quite = false);
 
             void enable();
 
@@ -40,6 +41,7 @@ namespace Cli
 
             uint16_t bufferIndex_;
             bool enabled_;
+            bool quite_;
 
             void parseInputs();
 

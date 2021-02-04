@@ -19,6 +19,7 @@ namespace Strings
     char* strtok(char* str, char delimeter);
     bool strcompare(const char* str1, const char* str2);
     int32_t str2int(const char* str);
+    float str2float(const char* str);
     bool isDigit(char c);
 }
 
