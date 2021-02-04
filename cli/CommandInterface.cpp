@@ -3,7 +3,7 @@
 #include "utilities/strings/Strings.hpp"
 #include "utilities/print/Print.hpp"
 
-using namespace Serial;
+using namespace Serial_;
 using namespace Strings;
 
 const char NEWLINE = '\n';
@@ -84,7 +84,7 @@ namespace Cli
                     {
                         token[tokenLength - 1] = '\0';
                     }
-
+                    
                     if (strlen(token) > 0)
                     {
                         strncpy(argv[argc], token, MAX_PARAM_LENGTH);

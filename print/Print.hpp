@@ -19,12 +19,12 @@
 class PrintHandler
 {
     public:
-        static void initialize(Serial::ISerial* pSerial);
+        static void initialize(Serial_::ISerial* pSerial);
         static void print(const char* format, bool newline, ...);
         static void flushUart(){ pSerial_->flush(); }
 
     private:
-        static Serial::ISerial* pSerial_;
+        static Serial_::ISerial* pSerial_;
 
         const static uint16_t MAX_STRING_LENGTH = 255;
         static char outputStr[];

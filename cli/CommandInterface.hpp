@@ -21,7 +21,7 @@ namespace Cli
     class CommandInterface
     {
         public:
-            CommandInterface(Serial::ISerial* pUart,
+            CommandInterface(Serial_::ISerial* pUart,
                              Command* commands,
                              uint16_t numCommands,
                              bool quite = false);
@@ -35,7 +35,7 @@ namespace Cli
         private:
             static char inputBuffer_[MAX_LINE_LENGTH];
 
-            Serial::ISerial* pSerial_;
+            Serial_::ISerial* pSerial_;
             Command* commands_;
             uint16_t numCommands_;
 
