@@ -15,12 +15,14 @@ namespace Cli
 
     CommandInterface::CommandInterface(ISerial* pSerial,
                                        const Command* commands,
-                                       uint16_t numCommands):
+                                       uint16_t numCommands,
+                                       bool quite):
         pSerial_(pSerial),
         commands_(commands),
         numCommands_(numCommands),
         bufferIndex_(0),
-        enabled_(false)
+        enabled_(false),
+        quite_(quite)
     {
 
     }
@@ -124,7 +126,7 @@ namespace Cli
             }
         }
 
-        PRINTLN("Command not supported.");
+        if (!quite_) PRINTLN("Command not supported.");
     }
 
     void CommandInterface::printError(CommandError error)
