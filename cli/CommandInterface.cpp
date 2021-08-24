@@ -3,7 +3,7 @@
 #include "utilities/strings/Strings.hpp"
 #include "utilities/print/Print.hpp"
 
-using namespace Serial;
+using namespace SerialComm;
 using namespace Strings;
 
 const char NEWLINE = '\n';
@@ -14,7 +14,7 @@ namespace Cli
     char CommandInterface::inputBuffer_[MAX_LINE_LENGTH];
 
     CommandInterface::CommandInterface(ISerial* pSerial,
-                                       Command* commands,
+                                       const Command* commands,
                                        uint16_t numCommands):
         pSerial_(pSerial),
         commands_(commands),
@@ -83,27 +83,28 @@ namespace Cli
                         token[tokenLength - 1] = '\0';
                     }
                     
-                    strncpy(argv[argc], token, MAX_PARAM_LENGTH);
+                    argv[argc] = token;
                     argc++;
                 } while((token = strtok(nullptr, ' ')) != nullptr);
-            }
-
-            if (lineEndIndex < bufferIndex_)
-            {
-                // More data in the buffer, move it to the front
-                // (Plus 1 is to not copy the newline)
-                uint16_t numRemainingBytes = bufferIndex_ - lineEndIndex - 1;
-                copy(inputBuffer_, &(inputBuffer_[lineEndIndex + 1]), numRemainingBytes);
-                bufferIndex_ = numRemainingBytes;
-            }
-            else
-            {
-                bufferIndex_ = 0;
             }
 
             if (argc > 0)
             {
                 execute(argc, argv);
+            }
+
+            uint16_t numRemainingBytes = bufferIndex_ - lineEndIndex - 1;
+            if (numRemainingBytes > 0)
+            {
+                copy(inputBuffer_, &(inputBuffer_[lineEndIndex + 1]), numRemainingBytes);
+                bufferIndex_ = numRemainingBytes;
+
+                // See if there is another command to parse
+                parseInputs();
+            }
+            else
+            {
+                bufferIndex_ = 0;
             }
         }
     }
@@ -124,5 +125,10 @@ namespace Cli
         }
 
         PRINTLN("Command not supported.");
+    }
+
+    void CommandInterface::printError(CommandError error)
+    {
+
     }
 }

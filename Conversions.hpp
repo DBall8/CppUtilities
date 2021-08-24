@@ -9,6 +9,8 @@ const static float VOLT_MAX = 5.0f;
 const static float C_TO_F_MULTIPLIER = 9.0f/5.0f;
 const static float C_TO_F_OFFSET = 32;
 
+const static float MAX_PERCENT_WHOLE = 100.0f;
+
 static float convertAdcToVoltage(int adc){
     return ((float)adc / (float)ADC_MAX) * VOLT_MAX;
 }

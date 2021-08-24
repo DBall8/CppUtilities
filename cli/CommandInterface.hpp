@@ -6,11 +6,9 @@
 namespace Cli
 {
     const static uint16_t MAX_LINE_LENGTH = 64;
-    const static uint16_t MAX_PARAM_LENGTH = 32;
-    const static uint16_t MAX_NUM_PARAMS = 12;
+    const static uint16_t MAX_NUM_PARAMS = 8;
 
-    typedef char CliParam[MAX_PARAM_LENGTH];
-    typedef CliParam ArgV[MAX_NUM_PARAMS];
+    typedef char* ArgV[MAX_NUM_PARAMS];
 
     struct Command
     {
@@ -18,11 +16,17 @@ namespace Cli
         void (*function)(uint16_t, ArgV);
     };
 
+    enum class CommandError : uint8_t
+    {
+        INVALID_VALUE,
+        INVALID_NUM_PARAMS
+    };
+
     class CommandInterface
     {
         public:
-            CommandInterface(Serial::ISerial* pUart,
-                             Command* commands,
+            CommandInterface(SerialComm::ISerial* pUart,
+                             const Command* commands,
                              uint16_t numCommands);
 
             void enable();
@@ -31,11 +35,13 @@ namespace Cli
 
             void update();
 
+            static void printError(CommandError error);
+
         private:
             static char inputBuffer_[MAX_LINE_LENGTH];
 
-            Serial::ISerial* pSerial_;
-            Command* commands_;
+            SerialComm::ISerial* pSerial_;
+            const Command* commands_;
             uint16_t numCommands_;
 
             uint16_t bufferIndex_;

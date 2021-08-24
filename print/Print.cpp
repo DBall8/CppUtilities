@@ -2,16 +2,13 @@
 #include "utilities/strings/Strings.hpp"
 #include "drivers/assert/Assert.hpp"
 
-using namespace Serial;
+using namespace SerialComm;
 using namespace Strings;
 
 const static char* NEWLINE = "\r\n";
 const static uint8_t NEWLINE_LENGTH = strlen(NEWLINE) + 1;
 
-ISerial* PrintHandler::pSerial_ = nullptr;
-char PrintHandler::outputStr[MAX_STRING_LENGTH + 1];
-
-void PrintHandler::initialize(Serial::ISerial* pSerial)
+void PrintHandler::initialize(ISerial* pSerial)
 {
     PrintHandler::pSerial_ = pSerial;
     // Safety terminator to prevent overflows
