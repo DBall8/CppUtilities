@@ -55,7 +55,7 @@ namespace Cli
 
     void CommandInterface::parseInputs()
     {
-        uint16_t lineEndIndex = 0;
+        int16_t lineEndIndex = -1;
         for (uint16_t i=0; i< bufferIndex_; i++)
         {
             if (inputBuffer_[i] == NEWLINE)
@@ -65,7 +65,19 @@ namespace Cli
             }
         }
 
-        if (lineEndIndex > 0)
+        if (lineEndIndex == -1)
+        {
+            // No line end found yet
+            return;
+        }
+        if ((lineEndIndex == 0) ||
+            (lineEndIndex == 1) && (inputBuffer_[0] == CR))
+        {
+            // Empty line given
+            if (!quite_) PRINT(">");
+            bufferIndex_ = 0;
+        }
+        else
         {
             inputBuffer_[lineEndIndex] = '\0';
             ArgV argv;
