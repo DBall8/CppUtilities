@@ -90,7 +90,7 @@ CircularQueue<T>::CircularQueue(T* array,
     tailIndex_ = 0;
     numData_ = 0;
 
-    if (protectAccess) assert(pInterruptControl_ != nullptr);
+    if (protectAccess) assertCustom(pInterruptControl_ != nullptr);
 }
 
 template <class T>

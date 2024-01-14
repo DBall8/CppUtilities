@@ -71,7 +71,7 @@ namespace Cli
             return;
         }
         if ((lineEndIndex == 0) ||
-            (lineEndIndex == 1) && (inputBuffer_[0] == CR))
+            ((lineEndIndex == 1) && (inputBuffer_[0] == CR)))
         {
             // Empty line given
             if (!quite_) PRINT(">");
