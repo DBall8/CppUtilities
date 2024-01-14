@@ -101,6 +101,12 @@ void PrintHandler::parseArguement(char* ouputStr, va_list* pList, const char* se
 
 void PrintHandler::print(const char* format, bool newline, ...)
 {
+    if (format == nullptr)
+    {
+        PrintHandler::pSerial_->write(NEWLINE, NEWLINE_LENGTH);
+        return;
+    }
+    
     va_list list;
     va_start(list, newline);
 

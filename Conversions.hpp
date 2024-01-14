@@ -17,6 +17,11 @@ static float convertAdcToVoltage(int adc){
 
 static float degreesCToF(float degreesC) { return degreesC * C_TO_F_MULTIPLIER + C_TO_F_OFFSET; }
 static float degreesFToC(float degreesF) { return (degreesF - C_TO_F_OFFSET) / C_TO_F_MULTIPLIER; }
+static float abs(float val)
+{
+    if (val < 0) val *= -1.0f;
+    return val;
+}
 
 static int32_t round(float value)
 {
