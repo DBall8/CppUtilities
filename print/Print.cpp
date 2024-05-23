@@ -3,7 +3,7 @@
 #include "drivers/assert/Assert.hpp"
 
 using namespace SerialComm;
-using namespace Strings;
+using namespace StringUtilities;
 
 const static char* NEWLINE = "\r\n";
 const static uint8_t NEWLINE_LENGTH = strlen(NEWLINE) + 1;

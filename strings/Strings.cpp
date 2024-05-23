@@ -1,7 +1,7 @@
 #include "Strings.hpp"
 #include "utilities/Conversions.hpp"
 
-namespace Strings
+namespace StringUtilities
 {
     uint8_t ZERO_VAL = (uint8_t)'0';
     uint8_t A_VAL = (uint8_t)'A';
@@ -321,5 +321,32 @@ namespace Strings
     {
         uint32_t digitVal = c - ZERO_VAL;
         return (digitVal >= 0) && (digitVal <= 9);
+    }
+
+    bool isWhitespace(char c)
+    {
+        return (c == ' ') ||
+               (c == '\r') ||
+               (c == '\t') ||
+               (c == '\n');
+    }
+
+    void trim(char* str)
+    {
+        if (str == nullptr) return;
+        if (*str == '\0') return;
+        
+        char* lastChar = str;
+        while (*str != '\0')
+        {
+            if (!isWhitespace(*str))
+            {
+                lastChar = str;
+            }
+            str++;
+        }
+
+        lastChar++;
+        *lastChar = '\0';
     }
 }
