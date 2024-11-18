@@ -67,7 +67,9 @@ void PrintHandler::parseArguement(char* ouputStr, va_list* pList, const char* se
             uint16_t strLength = strlen(strVal);
 
             // Cut string off early if there is not enough space to fit the full string
-            int16_t spaceRemaining = MAX_PRINT_LENGTH - outputLength;
+            if (outputLength > MAX_PRINT_LENGTH) return;
+            uint16_t spaceRemaining = MAX_PRINT_LENGTH - outputLength;
+            
             if (strLength > spaceRemaining) strLength = spaceRemaining;
 
             // Copy to output
