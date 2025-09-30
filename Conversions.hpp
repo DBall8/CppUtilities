@@ -16,4 +16,5 @@ float degreesCToF(float degreesC);
 float degreesFToC(float degreesF);
 int32_t round(float value);
 int32_t exp(int32_t value, int8_t exponent);
+float abs(float val);
 #endif

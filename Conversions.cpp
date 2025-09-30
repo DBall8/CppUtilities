@@ -30,3 +30,9 @@ int32_t exp(int32_t value, int8_t exponent)
     }
     return finalValue;
 }
+
+float abs(float val)
+{
+    if (val < 0) val *= -1.0f;
+    return val;
+}

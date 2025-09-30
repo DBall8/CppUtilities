@@ -26,6 +26,8 @@
 #define DEBUG_PRINT(x, ...)
 #endif
 
+const static uint16_t MAX_PRINT_LENGTH = 128;
+
 class PrintHandler
 {
     public:
@@ -45,8 +47,7 @@ class PrintHandler
     private:
         SerialComm::ISerial* pSerial_;
 
-        const static uint16_t MAX_STRING_LENGTH = 128;
-        char outputStr[MAX_STRING_LENGTH + 1];
+        char outputStr[MAX_PRINT_LENGTH + 1];
 
         PrintHandler(){};
         void parseArguement(char* ouputStr, va_list* pList, const char* selectorStr);

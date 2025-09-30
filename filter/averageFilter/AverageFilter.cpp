@@ -18,7 +18,7 @@ namespace Filter
 
   AverageFilter::~AverageFilter()
   {
-    delete(samples);
+    delete samples;
   }
 
   int AverageFilter::getSize(){ return filterSize; } 

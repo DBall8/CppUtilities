@@ -4,7 +4,7 @@
 #include "utilities/print/Print.hpp"
 
 using namespace SerialComm;
-using namespace Strings;
+using namespace StringUtilities;
 
 const char NEWLINE = '\n';
 const char CR = '\r';

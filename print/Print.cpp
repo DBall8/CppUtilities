@@ -3,7 +3,7 @@
 #include "drivers/assert/Assert.hpp"
 
 using namespace SerialComm;
-using namespace Strings;
+using namespace StringUtilities;
 
 const static char* NEWLINE = "\r\n";
 const static uint8_t NEWLINE_LENGTH = strlen(NEWLINE) + 1;
@@ -12,7 +12,7 @@ void PrintHandler::initialize(ISerial* pSerial)
 {
     PrintHandler::pSerial_ = pSerial;
     // Safety terminator to prevent overflows
-    outputStr[MAX_STRING_LENGTH] = '\0';
+    outputStr[MAX_PRINT_LENGTH] = '\0';
 }
 
 void PrintHandler::parseArguement(char* strOut, va_list* pList, const char* selectorStr)
@@ -25,7 +25,7 @@ void PrintHandler::parseArguement(char* strOut, va_list* pList, const char* sele
         case 'X':
         {
             int decVal = va_arg(*pList, int);
-            int16_t remainingSpace = MAX_STRING_LENGTH - outputLength;
+            int16_t remainingSpace = MAX_PRINT_LENGTH - outputLength;
             uint2str(decVal, &(outputStr[outputLength]), remainingSpace, 16);
             break;
         }
@@ -33,7 +33,7 @@ void PrintHandler::parseArguement(char* strOut, va_list* pList, const char* sele
         case 'd':
         {
             int decVal = va_arg(*pList, int);
-            int16_t remainingSpace = MAX_STRING_LENGTH - outputLength;
+            int16_t remainingSpace = MAX_PRINT_LENGTH - outputLength;
             int2str(decVal, &(outputStr[outputLength]), remainingSpace);
             break;
         }
@@ -41,7 +41,7 @@ void PrintHandler::parseArguement(char* strOut, va_list* pList, const char* sele
         case 'u':
         {
             unsigned int decVal = va_arg(*pList, unsigned int);
-            int16_t remainingSpace = MAX_STRING_LENGTH - outputLength;
+            int16_t remainingSpace = MAX_PRINT_LENGTH - outputLength;
             uint2str(decVal, &(outputStr[outputLength]), remainingSpace);
             break;
         }
@@ -56,7 +56,7 @@ void PrintHandler::parseArguement(char* strOut, va_list* pList, const char* sele
         case 'f':
         {
             double floatVal = va_arg(*pList, double);
-            int16_t remainingSpace = MAX_STRING_LENGTH - outputLength;
+            int16_t remainingSpace = MAX_PRINT_LENGTH - outputLength;
             float2str(floatVal, &(outputStr[outputLength]), remainingSpace);
             break;
         }
@@ -68,8 +68,10 @@ void PrintHandler::parseArguement(char* strOut, va_list* pList, const char* sele
             uint16_t strLength = strlen(strVal);
 
             // Cut string off early if there is not enough space to fit the full string
-            int16_t spaceRemaining = MAX_STRING_LENGTH - outputLength;
-            if ((int8_t)strLength > spaceRemaining) strLength = spaceRemaining;
+            if (outputLength > MAX_PRINT_LENGTH) return;
+            uint16_t spaceRemaining = MAX_PRINT_LENGTH - outputLength;
+            
+            if (strLength > spaceRemaining) strLength = spaceRemaining;
 
             // Copy to output
             copy(&(outputStr[outputLength]), strVal, strLength);
@@ -80,7 +82,7 @@ void PrintHandler::parseArguement(char* strOut, va_list* pList, const char* sele
         case 'c':
         {
             int charVal = va_arg(*pList, int);
-            int16_t remainingSpace = MAX_STRING_LENGTH - outputLength;
+            int16_t remainingSpace = MAX_PRINT_LENGTH - outputLength;
             if (remainingSpace > 0)
             {
                 outputStr[outputLength] = (char)charVal;
@@ -116,6 +118,7 @@ void PrintHandler::print(const char* format, bool newline, ...)
     bool selectorFound = false;
     uint16_t currStartIndex = 0;
     uint16_t formatLength = strlen(format);
+    if (formatLength > MAX_PRINT_LENGTH) formatLength = MAX_PRINT_LENGTH;
 
     for (uint16_t i=0; i<formatLength; i++)
     {
@@ -149,7 +152,7 @@ void PrintHandler::print(const char* format, bool newline, ...)
     }
 
     uint32_t finalLength = strlen(outputStr);
-    assert(finalLength < MAX_STRING_LENGTH, "Print string too long.");
+    assertCustom(finalLength <= MAX_PRINT_LENGTH, "Print string too long.");
 
     PrintHandler::pSerial_->write((uint8_t*)outputStr, finalLength);
 

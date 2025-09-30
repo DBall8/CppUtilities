@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-namespace Strings
+namespace StringUtilities
 {
     uint32_t strlen(const char* str);
     char* strncpy(char* dest, const char* src, uint32_t num);
@@ -21,6 +21,8 @@ namespace Strings
     int32_t str2int(const char* str);
     float str2float(const char* str);
     bool isDigit(char c);
+    bool isWhitespace(char c);
+    void trim(char* str);
 }
 
 #endif
