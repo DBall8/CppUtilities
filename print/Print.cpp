@@ -15,9 +15,10 @@ void PrintHandler::initialize(ISerial* pSerial)
     outputStr[MAX_STRING_LENGTH] = '\0';
 }
 
-void PrintHandler::parseArguement(char* ouputStr, va_list* pList, const char* selectorStr)
+void PrintHandler::parseArguement(char* strOut, va_list* pList, const char* selectorStr)
 {
-    uint16_t outputLength = strlen(outputStr);
+    (void)strOut;
+    uint16_t outputLength = strlen(strOut);
     switch (selectorStr[0])
     {
         case 'x':
@@ -68,7 +69,7 @@ void PrintHandler::parseArguement(char* ouputStr, va_list* pList, const char* se
 
             // Cut string off early if there is not enough space to fit the full string
             int16_t spaceRemaining = MAX_STRING_LENGTH - outputLength;
-            if (strLength > spaceRemaining) strLength = spaceRemaining;
+            if ((int8_t)strLength > spaceRemaining) strLength = spaceRemaining;
 
             // Copy to output
             copy(&(outputStr[outputLength]), strVal, strLength);

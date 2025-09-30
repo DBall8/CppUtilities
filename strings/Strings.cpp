@@ -182,7 +182,7 @@ namespace Strings
     bool isValidInteger(char charVal)
     {
         uint8_t intVal = charVal - ZERO_VAL;
-        return (intVal >= 0) && (intVal < 9);
+        return (intVal < 9);
     }
 
     uint8_t charToInt(char charVal)
@@ -320,6 +320,6 @@ namespace Strings
     bool isDigit(char c)
     {
         uint32_t digitVal = c - ZERO_VAL;
-        return (digitVal >= 0) && (digitVal <= 9);
+        return (digitVal <= 9);
     }
 }

@@ -71,7 +71,7 @@ namespace Cli
             return;
         }
         if ((lineEndIndex == 0) ||
-            (lineEndIndex == 1) && (inputBuffer_[0] == CR))
+            ((lineEndIndex == 1) && (inputBuffer_[0] == CR)))
         {
             // Empty line given
             if (!quite_) PRINT(">");
@@ -143,6 +143,18 @@ namespace Cli
 
     void CommandInterface::printError(CommandError error)
     {
+        switch (error)
+        {
+            case CommandError::INVALID_NUM_PARAMS:
+                PRINTLN("INV NUM PARAMS");
+                break;
 
+            case CommandError::INVALID_VALUE:
+                PRINTLN("INV VAL");
+
+            default:
+                PRINTLN("UNKNOWN ERR");
+                break;
+        }
     }
 }
